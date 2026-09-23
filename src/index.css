@@ -1,0 +1,437 @@
+:root {
+  --bg: #f3f4f6;
+  --ink: #1c2127;
+  --muted: #5e6872;
+  --faint: #8b939c;
+  --line: #d5dae1;
+  --warm: #7a624c;
+  color: var(--ink);
+  background: var(--bg);
+  font-family: "Instrument Sans", "Avenir Next", "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+}
+
+body {
+  overflow-x: hidden;
+}
+
+#story {
+  height: 2400vh;
+}
+
+.webgl {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--bg);
+}
+
+.hud {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  color: var(--ink);
+}
+
+.bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: transparent;
+}
+
+.bar > i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.top {
+  position: absolute;
+  top: 28px;
+  left: 36px;
+  right: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.mark {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.stage-name {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hint {
+  position: absolute;
+  left: 36px;
+  bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hint span {
+  width: 1px;
+  height: 42px;
+  background: var(--ink);
+}
+
+.cap {
+  position: absolute;
+  left: 36px;
+  bottom: 36px;
+  width: min(440px, calc(100vw - 72px));
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Quiet paper behind story captions so ink stays readable over the plant. */
+.cap:not(.finale) {
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--line);
+}
+
+.kicker {
+  margin: 0 0 10px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.cap h1,
+.cap h2 {
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  font-size: 32px;
+  color: var(--ink);
+}
+
+.cap p:not(.kicker) {
+  margin: 12px 0 0;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.center-copy,
+.finale {
+  left: 0;
+  right: 0;
+  bottom: auto;
+  top: 34%;
+  width: min(760px, calc(100vw - 48px));
+  margin-inline: auto;
+  text-align: center;
+}
+
+.center-copy h2 + h2 {
+  margin-top: 4px;
+  color: var(--muted);
+}
+
+.finale {
+  top: 30%;
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  max-width: min(980px, calc(100vw - 72px));
+}
+
+.finale::before {
+  content: "";
+  position: absolute;
+  inset: -36px -6vw;
+  z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(243, 244, 246, 0.94) 0%, rgba(243, 244, 246, 0.72) 46%, rgba(243, 244, 246, 0) 74%);
+}
+
+.finale h2 {
+  font-size: clamp(40px, 4.6vw, 64px);
+  letter-spacing: -0.04em;
+}
+
+.finale p {
+  width: 0;
+  min-width: 100%;
+  max-width: none;
+  margin: 18px 0 0;
+  font-size: 16px;
+  line-height: 1.45;
+  text-wrap: balance;
+  color: #3e4650;
+}
+
+.query,
+.answer {
+  left: 0;
+  right: 0;
+  bottom: 7vh;
+  width: min(640px, calc(100vw - 40px));
+  margin-inline: auto;
+  padding: 22px 24px 18px;
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+}
+
+.query .kicker {
+  font-family: "Instrument Sans", "Avenir Next", sans-serif;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--muted);
+}
+
+.query-line {
+  min-height: 1.35em;
+  margin: 0;
+  color: var(--ink);
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  line-height: 1.35;
+}
+
+.query-line::after {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 0.85em;
+  margin-left: 2px;
+  background: var(--ink);
+  vertical-align: -1px;
+}
+
+.query.is-done .query-line::after {
+  opacity: 0;
+}
+
+.trace-rel {
+  min-height: 0;
+  margin: 14px 0 0;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+}
+
+.trace-rel:empty {
+  display: none;
+}
+
+.answer {
+  width: min(720px, calc(100vw - 36px));
+  bottom: 4.5vh;
+}
+
+.answer h2 {
+  font-size: 28px;
+}
+
+.answer ol {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.answer li {
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+.answer li span {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--ink);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.caveat {
+  margin-top: 14px !important;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 13px !important;
+}
+
+.readout {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid var(--line);
+  padding: 6px 8px 5px;
+  min-width: 108px;
+  opacity: 0;
+}
+
+.readout span {
+  display: block;
+  color: var(--faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.readout b {
+  display: block;
+  margin-top: 3px;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.readout.is-warm b {
+  color: var(--warm);
+}
+
+.sys-tag {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 8px 10px 7px;
+  min-width: 168px;
+  opacity: 0;
+}
+
+.sys-tag span {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.sys-tag b {
+  display: block;
+  margin-top: 3px;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
+.rel-tag {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--line);
+  padding: 4px 8px 3px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(calc(-100% - 14px));
+}
+
+.area-tag {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transform: translate(-50%, calc(-100% - 18px));
+  --stem: 50%;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--line);
+  padding: 4px 7px;
+  white-space: nowrap;
+  opacity: 0;
+}
+
+.area-tag::after {
+  content: "";
+  position: absolute;
+  left: var(--stem, 50%);
+  top: 100%;
+  width: 1px;
+  height: 18px;
+  background: var(--muted);
+}
+
+.area-code {
+  color: var(--warm);
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+::selection {
+  background: #e1e5ea;
+}
+
+@media (max-width: 760px) {
+  .top, .hint, .cap { left: 20px; right: 20px; }
+  .top { right: 20px; }
+  .cap { width: auto; bottom: 24px; }
+  .cap h1, .cap h2 { font-size: 26px; }
+  .finale h2 { font-size: 40px; }
+  .query, .answer { bottom: 16px; padding: 16px; }
+  .query-line { font-size: 18px; }
+  .center-copy { width: min(100% - 32px, 720px); top: 28%; }
+  .finale {
+    top: 28%;
+    left: 0;
+    right: 0;
+    width: max-content;
+    max-width: calc(100vw - 40px);
+  }
+  .finale p { width: 0; min-width: 100%; }
+}
